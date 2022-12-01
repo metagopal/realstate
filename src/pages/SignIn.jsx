@@ -26,10 +26,8 @@ function SignIn() {
   const navigate = useNavigate();
   const onSubmit = async (e) => {
     e.preventDefault();
-
     try {
       const auth = getAuth();
-
       const userCredential = await signInWithEmailAndPassword(
         auth,
         email,

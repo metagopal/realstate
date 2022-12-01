@@ -3,6 +3,8 @@ import key from "../media/key.jpg";
 
 import { Link } from "react-router-dom";
 import OAuth from "../components/OAuth";
+import { toast } from "react-toastify";
+import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 
 function ForgotPassword() {
   const [email, setEmail] = useState();
@@ -10,6 +12,18 @@ function ForgotPassword() {
   function onChange(e) {
     setEmail(e.target.value);
   }
+
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const auth = getAuth();
+      await sendPasswordResetEmail(auth, email);
+      toast.success("Email was sent");
+    } catch (error) {
+      console.log(error);
+      toast.error("Cound not send reset password");
+    }
+  };
 
   return (
     <section>
@@ -20,7 +34,7 @@ function ForgotPassword() {
           <img src={key} alt="" className="m-full rounded-2xl" />
         </div>
         <div className="w-full md:w-[67%] lg:w-[40%] lg:ml-20">
-          <form>
+          <form onSubmit={onSubmit}>
             <div className="mb-6">
               <input
                 type="email"
@@ -36,10 +50,10 @@ function ForgotPassword() {
               <p className="mb-6">
                 Have an account?
                 <Link
-                  to="/sign-in"
+                  to="/sign-up"
                   className="text-red-600 hover:text-red-700 transition duration-200 ease-in-out ml-4"
                 >
-                  Sign in
+                  Register
                 </Link>
               </p>
               <p>
