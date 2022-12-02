@@ -6,6 +6,8 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 function Header() {
   const [pageState, setPageState] = useState("Sign in");
   const auth = getAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -16,9 +18,6 @@ function Header() {
       }
     });
   }, [auth]);
-
-  const navigate = useNavigate();
-  const location = useLocation();
 
   function pathMatchRoute(route) {
     if (route === location.pathname) {
