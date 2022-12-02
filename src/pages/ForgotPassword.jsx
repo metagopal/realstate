@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import key from "../media/key.jpg";
+import key from "../assets/key.jpg";
 
 import { Link } from "react-router-dom";
 import OAuth from "../components/OAuth";

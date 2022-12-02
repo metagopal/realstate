@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import key from "../media/key.jpg";
+import key from "../assets/key.jpg";
 import { toast } from "react-toastify";
 
 import { AiFillEyeInvisible, AiFillEye } from "react-icons/ai";
