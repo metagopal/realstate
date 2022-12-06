@@ -39,7 +39,7 @@ function CreateListing() {
 
   const {
     type,
-    name,
+    name,  
     bedrooms,
     bathrooms,
     parking,

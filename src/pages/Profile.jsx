@@ -26,7 +26,7 @@ function Profile() {
   const { name, email } = formData;
 
   const [changeDetail, setChangeDetail] = useState(false);
-  const [listings, setListings] = useState(null);
+  const [listings, setListings] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const onLogout = () => {
@@ -60,9 +60,33 @@ function Profile() {
     }
   };
 
+  // useEffect(() => {
+  //   const fetchUserListing = async () => {
+  //     setLoading(true);
+  //     const listingRef = collection(db, "listings");
+  //     const q = query(
+  //       listingRef,
+  //       where("userRef", "==", auth.currentUser.uid),
+  //       orderBy("timestamp", "desc")
+  //     );
+  //     const querySnap = await getDocs(q);
+  //     let listing = [];
+  //     querySnap.forEach((doc) => {
+  //       return listing.push({
+  //         id: doc.id,
+  //         data: doc.data(),
+  //       });
+  //     });
+  //     console.log(listing)
+  //     setListings(listing);
+  //     setLoading(false);
+  //     console.log(listings);
+  //   };
+  //   fetchUserListing();
+  // }, [auth.currentUser.uid]);
+
   useEffect(() => {
-    const fetchUserListing = async () => {
-      setLoading(true);
+    async function fetchUserListings() {
       const listingRef = collection(db, "listings");
       const q = query(
         listingRef,
@@ -70,22 +94,21 @@ function Profile() {
         orderBy("timestamp", "desc")
       );
       const querySnap = await getDocs(q);
-      let listing = [];
+      let listings = [];
       querySnap.forEach((doc) => {
-        return listing.push({
+        return listings.push({
           id: doc.id,
           data: doc.data(),
         });
       });
-       
-      setListings(listing);
+      setListings(listings);
       setLoading(false);
-       
-    };
-    fetchUserListing();
+      console.log(listings);
+    }
+    fetchUserListings();
   }, [auth.currentUser.uid]);
 
-  return (
+  return  (
     <>
       <section className="max-w-6xl mx-auto flex justify-center flex-col">
         <h1 className="text-3xl text-center mt-6 font-bold">My Profile</h1>
@@ -164,12 +187,12 @@ function Profile() {
           </button>
         </div>
       </section>
-      <div className="max-2-6xl px-3 mt-6 mx-auto">
+      <div className="max-w-6xl px-3 mt-6 mx-auto">
         {!loading && listings.length > 0 && (
           <>
-            <h2 className="text-2xl text-center font-semibold">My listing</h2>
+            <h2 className="text-2xl text-center font-semibold mb-6">My listing</h2>
 
-            <ul>
+            <ul className="sm:grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 mt-6 mb-6 space-x-5">
               {listings.map((listing) => {
                 return (
                   <ListingItem
