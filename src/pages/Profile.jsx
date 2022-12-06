@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import {
   collection,
+  deleteDoc,
   doc,
   getDocs,
   orderBy,
@@ -60,33 +61,9 @@ function Profile() {
     }
   };
 
-  // useEffect(() => {
-  //   const fetchUserListing = async () => {
-  //     setLoading(true);
-  //     const listingRef = collection(db, "listings");
-  //     const q = query(
-  //       listingRef,
-  //       where("userRef", "==", auth.currentUser.uid),
-  //       orderBy("timestamp", "desc")
-  //     );
-  //     const querySnap = await getDocs(q);
-  //     let listing = [];
-  //     querySnap.forEach((doc) => {
-  //       return listing.push({
-  //         id: doc.id,
-  //         data: doc.data(),
-  //       });
-  //     });
-  //     console.log(listing)
-  //     setListings(listing);
-  //     setLoading(false);
-  //     console.log(listings);
-  //   };
-  //   fetchUserListing();
-  // }, [auth.currentUser.uid]);
-
   useEffect(() => {
-    async function fetchUserListings() {
+    const fetchUserListing = async () => {
+      setLoading(true);
       const listingRef = collection(db, "listings");
       const q = query(
         listingRef,
@@ -94,21 +71,34 @@ function Profile() {
         orderBy("timestamp", "desc")
       );
       const querySnap = await getDocs(q);
-      let listings = [];
+      let listing = [];
       querySnap.forEach((doc) => {
-        return listings.push({
+        return listing.push({
           id: doc.id,
           data: doc.data(),
         });
       });
-      setListings(listings);
+      setListings(listing);
       setLoading(false);
-      console.log(listings);
-    }
-    fetchUserListings();
+    };
+    fetchUserListing();
   }, [auth.currentUser.uid]);
 
-  return  (
+  const onDelete = async (listingID) => {
+    if (window.confirm("Are you sure you want to delete?")) {
+      await deleteDoc(doc(db, "listings", listingID));
+      const updatedListings = listings.filter(
+        (listing) => listing.id !== listingID
+      );
+      setListings(updatedListings);
+      toast.success("Successfully deleted listing")
+    }
+  };
+  const onEdit = (listingID) => {
+    navigate(`/edit-listing/${listingID}`);
+  };
+
+  return (
     <>
       <section className="max-w-6xl mx-auto flex justify-center flex-col">
         <h1 className="text-3xl text-center mt-6 font-bold">My Profile</h1>
@@ -190,7 +180,9 @@ function Profile() {
       <div className="max-w-6xl px-3 mt-6 mx-auto">
         {!loading && listings.length > 0 && (
           <>
-            <h2 className="text-2xl text-center font-semibold mb-6">My listing</h2>
+            <h2 className="text-2xl text-center font-semibold mb-6">
+              My listing
+            </h2>
 
             <ul className="sm:grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 mt-6 mb-6 space-x-5">
               {listings.map((listing) => {
@@ -199,6 +191,8 @@ function Profile() {
                     key={listing.id}
                     id={listing.id}
                     listing={listing.data}
+                    onDelete={() => onDelete(listing.id)}
+                    onEdit={() => onEdit(listing.id)}
                   />
                 );
               })}
