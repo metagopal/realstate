@@ -77,9 +77,10 @@ function Profile() {
           data: doc.data(),
         });
       });
+       
       setListings(listing);
       setLoading(false);
-      console.log(listings);
+       
     };
     fetchUserListing();
   }, [auth.currentUser.uid]);
