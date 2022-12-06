@@ -29,7 +29,7 @@ function CreateListing() {
     furnished: false,
     address: "",
     description: "",
-    offer: true,
+    offer: false,
     regularPrice: 0,
     discountedPrice: 0,
     latitude: 0,
@@ -123,14 +123,6 @@ function CreateListing() {
             const progress =
               (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
             console.log("Upload is " + progress + "% done");
-            // switch (snapshot.state) {
-            //   case "paused":
-            //     console.log("Upload is paused");
-            //     break;
-            //   case "running":
-            //     console.log("Upload is running");
-            //     break;
-            // }
           },
           (error) => {
             // Handle
@@ -159,6 +151,7 @@ function CreateListing() {
       imgUrls,
       geolocation,
       timestamp: serverTimestamp(),
+      userRef: auth.currentUser.uid,
     };
     delete formDataCopy.images;
     delete formDataCopy.latitude;
