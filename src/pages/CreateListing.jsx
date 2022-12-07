@@ -152,6 +152,7 @@ function CreateListing() {
       geolocation,
       timestamp: serverTimestamp(),
       userRef: auth.currentUser.uid,
+      email:'gopal.agarwal@metacube.com'
     };
     delete formDataCopy.images;
     delete formDataCopy.latitude;
