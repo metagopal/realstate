@@ -11,7 +11,7 @@ function PrivateRoute() {
     return <Spinner />;
   }
 
-  console.log(loggedIn);
+  //console.log(loggedIn);
 
   return loggedIn ? <Outlet /> : <Navigate to="/sign-in" />;
 }

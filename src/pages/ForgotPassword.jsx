@@ -20,7 +20,7 @@ function ForgotPassword() {
       await sendPasswordResetEmail(auth, email);
       toast.success("Email was sent");
     } catch (error) {
-      console.log(error);
+      //console.log(error);
       toast.error("Cound not send reset password");
     }
   };

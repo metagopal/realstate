@@ -21,7 +21,7 @@ function SignIn() {
       ...prev,
       [e.target.id]: e.target.value,
     }));
-    console.log(formData);
+    //console.log(formData);
   }
   const navigate = useNavigate();
   const onSubmit = async (e) => {

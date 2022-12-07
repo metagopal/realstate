@@ -71,7 +71,7 @@ function CreateListing() {
         [e.target.id]: boolean ?? e.target.value,
       }));
     }
-    console.log(formData);
+    //console.log(formData);
   };
 
   const onSubmit = async (e) => {
