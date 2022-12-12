@@ -27,6 +27,7 @@ import SwiperCore, {
 } from "swiper";
 import { getAuth } from "firebase/auth";
 import Contact from "../components/Contact";
+import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 
 function Listing() {
   const params = useParams();
@@ -64,7 +65,7 @@ function Listing() {
       setShareLinkCopied(false);
     }, 3000);
   };
-  console.log(listing);
+
   return (
     <main>
       <Swiper
@@ -163,9 +164,36 @@ function Listing() {
               </button>
             </div>
           )}
-          {contactLandlord && <Contact userRef={listing.userRef} listing={listing} />}
+          {contactLandlord && (
+            <Contact userRef={listing.userRef} listing={listing} />
+          )}
         </div>
-        <div className="bg-blue-300 w-full h-[200px] lg-[400px] z-10 overflow-hidden"></div>
+
+        <div className="w-full h-[200px] md:h-[400px]  mt-6 md:mt-0 md:ml-2  z-10 overflow-hidden">
+          {listing.geolocation && (
+            <MapContainer
+              center={[listing.geolocation.lat, listing.geolocation.lng]}
+              zoom={13}
+              scrollWheelZoom={false}
+              style={{
+                height: "100%",
+                width: "100%",
+              }}
+            >
+              <TileLayer
+                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              />
+              <Marker
+                position={[listing.geolocation.lat, listing.geolocation.lng]}
+              >
+                <Popup>
+                  A pretty CSS3 popup. <br /> Easily customizable.
+                </Popup>
+              </Marker>
+            </MapContainer>
+          )}
+        </div>
       </div>
     </main>
   );
