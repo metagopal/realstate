@@ -184,7 +184,7 @@ function Profile() {
               My listing
             </h2>
 
-            <ul className="sm:grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 mt-6 mb-6 space-x-5">
+            <ul className="sm:grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 mt-6 mb-6   gap-4">
               {listings.map((listing) => {
                 return (
                   <ListingItem
